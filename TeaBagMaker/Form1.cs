@@ -32,17 +32,11 @@ namespace TeaBagMaker
                 this.lblTeaName.Text = TeaList[0]; // selected first tea
             }
         }
-
+               
         private void Teas_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.lblTeaName.Text = this.CbTeas.Text;
-        }
-
-        private void BtnStart_Click(object sender, EventArgs e)
-        {
-            this.txtCountDown.ReadOnly = true; // can't write here
-            this.count.Enabled = true; // start timer
-            switch(CbTeas.Text)
+            switch (CbTeas.Text)
             {
                 case "홍차":
                     CountTime = TeaTime[0];
@@ -57,6 +51,14 @@ namespace TeaBagMaker
                     CountTime = TeaTime[0];
                     break;
             }
+            writeTime("걸립니다.");
+        }
+
+        private void BtnStart_Click(object sender, EventArgs e)
+        {
+            this.txtCountDown.ReadOnly = true; // can't write here
+            this.txtCountDown.Text = ""; // initialize
+            this.count.Enabled = true; // start timer
         }
 
         private void Count_Tick(object sender, EventArgs e)
@@ -72,10 +74,20 @@ namespace TeaBagMaker
             else
             {
                 this.CountTime--;
-                int min = this.CountTime / 60;
-                int sec = this.CountTime % 60;
-                this.txtCountDown.Text = Convert.ToString(min)+"분 "+Convert.ToString(sec)+"초 남았습니다!";
+                writeTime("남았습니다!");
             }
+        }
+
+        private void writeTime(string lastMent)
+        {
+            int min = this.CountTime / 60;
+            int sec = this.CountTime % 60;
+            this.txtCountDown.Text = "";
+            if (min != 0)
+                this.txtCountDown.Text += Convert.ToString(min) + "분 ";
+            if (sec != 0)
+                this.txtCountDown.Text += Convert.ToString(sec) + "초 ";
+            this.txtCountDown.Text += lastMent;
         }
     }
 }
